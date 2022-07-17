@@ -4,16 +4,16 @@ const app = express();
 const apiRoutes = require("./routes/apiRoutes");
 const htmlRoutes = require("./routes/htmlRoutes");
 
-// middleware
+//MIDDLEWARE
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-//routes
+//ROUTES
 app.use("/api", apiRoutes);
 app.use("/", htmlRoutes);
 
-//listener
+//LISTENER
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}!`);
 });
