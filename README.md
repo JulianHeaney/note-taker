@@ -5,7 +5,7 @@
 
 A note taking application that allows a user to input note title and text. Notes can be saved and deleted.
 
-View the deployed application [here](https://peaceful-brushlands-07734.herokuapp.com//)
+Deployed application [here](https://peaceful-brushlands-07734.herokuapp.com//)
 
 ![ScreenShot](./public/assets/images/note-taker_screenshot.png)
 
