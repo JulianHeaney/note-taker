@@ -1,36 +1,30 @@
 const router = require("express").Router();
-const { notes } = require("../db/db.json");
-const { createNewNote, validateNote, deleteNote } = require("../lib/notes");
+const dbJson = require("../db/db.json");
+const fs = require("fs");
+const path = require("path");
+const { createNote, getNotes, write } = require("../db/db.js");
 
-
-// get request to RETREIVE NOTES
-router.get('/notes', (req, res) => {
-   //console.log(notes);
-   res.json(notes);
+router.get("/notes", (req, res) => {
+  getNotes()
+    .then((notes) => {
+      return res.json(notes);
+    })
+    .catch((err) => res.status(500).json(err));
 });
 
-
-// post request to PRINT NOTES to page
-router.post('/notes', (req, res) => {
-   // set NOTE ID
-   req.body.id = notes.length.toString();
-
-   // validate notes
-   if (!validateNote(req.body)) {
-      res.status(400).send('The note is not properly formatted!');
-   } else {
-      const note = createNewNote(req.body, notes);
-      res.json(note);
-   }
+router.post("/notes", (req, res) => {
+  const note = createNote(req.body);
+  res.json(note);
 });
 
-
-// delete request to DELETE NOTE
-router.delete('/notes/:id', (req, res) => {
-   const params = req.params.id;
-   deleteNote(params, notes);
-   res.redirect('');
-}); 
-
+router.delete("/notes/:id", (req, res) => {
+  let deleteId = req.params.id;
+  getNotes()
+    .then((notes) => {
+      const results = notes.filter((notes) => notes.id !== deleteId);
+      write(results);
+    });
+res.json(`deleted note ${deleteId}`)
+});
 
 module.exports = router;
